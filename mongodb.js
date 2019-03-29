@@ -11,14 +11,17 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     }
     const db = client.db(databaseName)
 
-
-    db.collection('tasks').deleteOne({
-        desscription:"HI"
-      }).then((result)=>{
-        console.log(result)
-      }).catch((error)=>{
-        console.log(error)
-      }) 
+    db.collection('users').insertOne({
+        name: 'Nagaraja',
+        age: 27
+    }, (error, result) => {
+        if (error) {
+            return console.log('Unable to insert user')
+        }
+    
+        console.log(result.ops)
+    }) 
+   
 })
  
 
@@ -164,4 +167,13 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
       }).catch((error)=>{
         console.log(error)
       }) */
-      
+
+      // DELETE A TAK CHALLENGE 
+/* 
+      db.collection('tasks').deleteOne({
+        desscription:"HI"
+      }).then((result)=>{
+        console.log(result)
+      }).catch((error)=>{
+        console.log(error)
+      })  */
