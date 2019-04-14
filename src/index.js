@@ -9,18 +9,34 @@ const taskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT || 3000
 
+const multer = require('multer')
 
-/*  // Middle-Ware 
-app.use((req, res, next) => {
-    if (req.method === 'GET') {
-        res.send('GET methods are disabled')
-    } else {
-        next()
+const upload = multer({
+    dest: 'images',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+
+        if (!file.originalname.match(/\.(doc|docx)$/)) {
+            cb(new Error('Please uplaod a word document'));
+        }
+        cb(undefined, true)
     }
 })
- app.use((req,res,next)=>{
-    res.status(503).send('Site is currently down. Check back Soon !')
-}) */
+
+
+app.post('/upload', upload.single('upload'), (req, res) => {
+    res.send()
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message })
+})
+
+
+
+
+
+
 
 
 // Automatically Parse Incoming Json to Object and access it from req handler

@@ -7,9 +7,6 @@ const router = new express.Router()
 
 // Create Task
 router.post('/tasks', auth, async (req, res) => {
-
-    //const task = new Task(req.body)
-
     const task = new Task({
         ...req.body,
         owner: req.user._id
@@ -23,15 +20,38 @@ router.post('/tasks', auth, async (req, res) => {
     }
 })
 
+
 // Read all Tasks
 router.get('/tasks', auth, async (req, res) => {
 
-    try {
-        const tasks = await Task.find({ owner: req.user._id })
-        res.status(200).send(tasks)
+   // not Working code 
+   /*  
+    const match = {}
+
+    if(req.query.completed){
+        match.completed  = req.query.completed === 'true'
+    }
+
+    req.query.completed
+   
+   try {
+        await req.user.populate(
+            {
+                path: 'tasks',
+                match
+            }).execPopulate()
+        res.send(req.user.tasks)
+
     } catch (e) {
         res.status(500).send()
     }
+ */
+  try {
+         const tasks = await Task.find({ owner: req.user._id })
+         res.status(200).send(tasks)
+     } catch (e) {
+         res.status(500).send()
+     } 
 })
 
 // Read Task
@@ -63,7 +83,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     }
 
     try {
-        const task = await Task.findOne({ _id: req.params.id, owner: req.user._id})
+        const task = await Task.findOne({ _id: req.params.id, owner: req.user._id })
 
         if (!task) {
             return res.status(404).send()
