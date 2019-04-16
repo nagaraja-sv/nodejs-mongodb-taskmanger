@@ -6,8 +6,6 @@ const sharp = require('sharp')
 
 const router = new express.Router()
 
-
-
 // Create User 
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
